@@ -57,3 +57,4 @@ buck-out/
 #
 .expo/
 /ios/Pods/
+secets.ts
