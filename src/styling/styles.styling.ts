@@ -10,7 +10,9 @@ export const Styles = {
       dark: '#a00037',
       light: '#ff5c8d',
       main: '#d81b60'
-    }
+    },
+    fail: 'red',
+    success: 'green'
   },
   textSizes: {
     extraSmall: 12,
