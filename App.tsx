@@ -5,6 +5,7 @@ import { StackNavigator } from 'react-navigation';
 import { GreetingScreen } from './src/screens/greeting.screen';
 import { LandingScreen } from './src/screens/landing.screen';
 import { SignUpScreen } from './src/screens/signup.screen';
+import { LoginScreen } from './src/screens/login.screen';
 
 // tslint:disable-next-line:variable-name
 const MobileLift = StackNavigator({
@@ -21,6 +22,12 @@ const MobileLift = StackNavigator({
     screen: SignUpScreen,
     navigationOptions: {
       title: 'Sign Up'
+    }
+  },
+  'login': {
+    screen: LoginScreen,
+    navigationOptions: {
+      title: 'Login'
     }
   }
 });

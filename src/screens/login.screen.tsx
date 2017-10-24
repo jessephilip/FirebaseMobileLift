@@ -4,7 +4,6 @@ import { Styles } from '../styling/styles.styling';
 
 // TODO: For now, typing is not working on this import. Ignore redlining on this import.
 import * as auth from '../constants/authentication.helpers';
-import * as db from '../constants/database.helpers';
 import { CustomTextInput } from '../components/customTextInput';
 import * as enums from '../constants/enums';
 
@@ -15,7 +14,6 @@ interface Props {
 interface State {
 
   // state for text inputs
-  confirm: string;
   email: string;
   password: string;
 
@@ -25,7 +23,7 @@ interface State {
   modalMessage: string;
 }
 
-export class SignUpScreen extends Component<Props, State> {
+export class LoginScreen extends Component<Props, State> {
 
   constructor (props) {
     super(props);
@@ -46,13 +44,6 @@ export class SignUpScreen extends Component<Props, State> {
     this.setState({ 'modalMessage': message });
   }
 
-  private doWhenNotMatched = () => {
-    const message = 'Your password and password confirmation do not match.';
-    this.setState({ modalIsVisible: true });
-    this.setState({ 'modalHeaderText': 'Registration Error' });
-    this.setState({ 'modalMessage': message });
-  }
-
   private serverError = error => {
     const message = error.message;
     this.setState({ modalIsVisible: true });
@@ -60,38 +51,20 @@ export class SignUpScreen extends Component<Props, State> {
     this.setState({ 'modalMessage': message });
   }
 
-  public signUp = () => {
+  public login = () => {
 
     // require all three parameters
-    if (!this.state.email || !this.state.password || !this.state.confirm) {
+    if (!this.state.email || !this.state.password) {
       this.doWhenFieldsAreEmpty();
       return false;
     }
 
-    if (this.state.password !== this.state.confirm) {
-      this.doWhenNotMatched();
-      return false;
-    }
-
     // password must match password confirmation
-    auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
+    auth.signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(result => {
-        // create user document in Firestore
-        const profile = {
-          displayName: result.displayName,
-          email: result.email,
-          emailVerified: result.emailVerified,
-          isAnonymous: result.isAnonymous,
-          photoURL: result.photoURL,
-          uid: result.uid
-        };
-
-        db.createUserDocument(profile)
-          .then(() => {
-            // navigate if successful
-            const { navigate } = this.props.navigation;
-            navigate ('landing');
-          });
+        // navigate if successful
+        const { navigate } = this.props.navigation;
+        navigate ('landing');
       })
       .catch(error => {
         this.serverError(error);
@@ -114,11 +87,11 @@ export class SignUpScreen extends Component<Props, State> {
           style={ styling.headingView }>
           <Text
             style={ styling.headingText }>
-            Sign Up
+            Login
           </Text>
           <Text
             style={ styling.text }>
-            Sign up to get a personalized experience.
+            Log into your account with Up-Lift.
           </Text>
         </View>
         <View
@@ -139,20 +112,13 @@ export class SignUpScreen extends Component<Props, State> {
             selectTextOnFocus={ true }
             wrapperStyle={ stylingForPasswordInput }
           />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            label='Confirm Password'
-            onChangeText={ text => this.setState({ 'confirm': text }) }
-            secureTextEntry={ true }
-            selectTextOnFocus={ true }
-          />
         </View>
         <View
           style={ styling.signUpButtonView }>
           <Button
             color={ Styles.colors.secondary.main }
-            onPress={ this.signUp }
-            title='Sign Up' />
+            onPress={ this.login }
+            title='Login' />
         </View>
         <Modal
           animationType={ enums.ModalAnimationType.slide }

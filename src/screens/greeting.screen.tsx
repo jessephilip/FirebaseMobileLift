@@ -39,14 +39,9 @@ export class GreetingScreen extends Component<Props, State> {
     title: 'Up-Lift'
   };
 
-  public buttonPress = () => {
+  public goTo = (destination: string) => {
     const { navigate } = this.props.navigation;
-    navigate ('landing');
-  }
-
-  public signUp = () => {
-    const { navigate } = this.props.navigation;
-    navigate ('signup');
+    navigate (destination);
   }
 
   public render () {
@@ -67,11 +62,15 @@ export class GreetingScreen extends Component<Props, State> {
           </Text>
           <Button
             color={ Styles.colors.secondary.main }
-            onPress={ this.buttonPress }
+            onPress={ () => this.goTo('landing') }
             title='Landing' />
           <Button
             color={ Styles.colors.secondary.main }
-            onPress={ this.signUp }
+            onPress={ () => this.goTo('login') }
+            title='Login' />
+          <Button
+            color={ Styles.colors.secondary.main }
+            onPress={ () => this.goTo('signup') }
             title='Sign Up' />
         </View>
       </View>

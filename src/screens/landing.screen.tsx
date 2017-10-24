@@ -7,6 +7,9 @@ import { TodayScreen } from '../screens/today.screen';
 import { ScheduleScreen } from '../screens/schedule.screen';
 import { ChallengesScreen } from '../screens/challenges.screen';
 
+import * as auth from '../constants/authentication.helpers';
+import * as db from '../constants/database.helpers';
+
 // styling
 import { Styles } from '../styling/styles.styling';
 
