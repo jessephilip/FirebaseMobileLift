@@ -25,3 +25,28 @@ export enum ModalAnimationType {
   slide = 'slide',
   fade = 'fade'
 }
+
+/* cust Enums for this app */
+export enum MuscleCategory {
+  arms = 'arms',
+  back = 'back',
+  chest = 'chest',
+  core = 'core',
+  glutes = 'glutes',
+  legs = 'legs',
+  shoulders = 'shoulders',
+}
+
+export enum MuscleGroup {
+  biceps = 'biceps',
+  cavs = 'cavs',
+  forearm = 'forearms',
+  pectorals = 'pectorals',
+  thighs = 'thighs',
+  triceps = 'triceps',
+}
+
+export enum ExerciseNoteType {
+  fail = 'fail',
+  success = 'success'
+}
