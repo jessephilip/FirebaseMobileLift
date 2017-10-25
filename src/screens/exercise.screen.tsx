@@ -8,6 +8,42 @@ export class ExerciseScreen extends Component {
     super(props);
   }
 
+  public failButtons = () => {
+    return (
+      <View
+        style={ footer.failButtons }>
+        <TouchableOpacity
+          style={ footer.failButton }>
+          <Text
+            style={ footer.text }>
+            &times;
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ footer.failButton }>
+          <Text
+            style={ footer.text }>
+            &times;
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ footer.failButton }>
+          <Text
+            style={ footer.text }>
+            &times;
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ footer.failButton }>
+          <Text
+            style={ footer.text }>
+            &times;
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   public render () {
     return (
       <View
@@ -28,12 +64,12 @@ export class ExerciseScreen extends Component {
           <TouchableOpacity
             style={ footer.fail }>
             <Text
-              style={ footer.text }>Left</Text>
+              style={ footer.text }>&times;</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={ footer.success }>
             <Text
-              style={ footer.text }>Right</Text>
+              style={ footer.text }>&#10003;</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -58,7 +94,12 @@ const header = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    color: 'white'
+    color: 'white',
+    fontSize: Styles.textSizes.normal,
+    fontWeight: 'bold',
+    textShadowColor: Styles.shadows.textShadow.textShadowColor,
+    textShadowOffset: Styles.shadows.textShadow.textShadowOffset,
+    textShadowRadius: Styles.shadows.textShadow.textShadowRadius
   }
 });
 
@@ -78,7 +119,12 @@ const footer = StyleSheet.create({
     flexDirection: 'row'
   },
   text: {
-    color: 'white'
+    color: 'white',
+    fontSize: Styles.textSizes.large,
+    fontWeight: 'bold',
+    textShadowColor: Styles.shadows.textShadow.textShadowColor,
+    textShadowOffset: Styles.shadows.textShadow.textShadowOffset,
+    textShadowRadius: Styles.shadows.textShadow.textShadowRadius
   },
   fail: {
     alignItems: 'center',
@@ -91,5 +137,14 @@ const footer = StyleSheet.create({
     backgroundColor: Styles.colors.success,
     flex: 1,
     justifyContent: 'center'
+  },
+  failButtons: {
+    flexDirection: 'row'
+  },
+  failButton: {
+    flex: 2
+  },
+  successButtons: {
+    flexDirection: 'row'
   }
 });
