@@ -1,11 +1,10 @@
-import { secrets } from '../../secets';
-import firebase from 'react-native-firebase';
-
-export function getCSRF (): string {
-  const token = [];
-  const num = (): number => Math.floor(Math.random() * (122 - 97) + 97);
-  for (let i = 0; i < 33; i++) {
-    token.push(String.fromCharCode(num()));
+export function getRandomInt (max: number, min?: number): number {
+  if (min === null || min === undefined) {
+    max = Math.floor(max);
+    return Math.floor(Math.random() * max);
   }
-  return token.join('');
+
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }

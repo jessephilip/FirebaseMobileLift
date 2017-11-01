@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
-import { Styles } from '../styling/styles.styling';
+import { Text } from 'react-native';
 
 interface Props {}
 interface State {}
@@ -13,7 +12,7 @@ export class ScheduleScreen extends Component<Props, State> {
 
   public render () {
     return (
-      <Text>This is the Schedule Screen</Text>
+      <Text>This is the schedule screen.</Text>
     );
   }
 }

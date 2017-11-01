@@ -10,6 +10,18 @@ export const Styles = {
       dark: '#a00037',
       light: '#ff5c8d',
       main: '#d81b60'
+    },
+    fail: 'red',
+    success: 'green',
+    gradients: {
+      green: {
+        start: '#1a851b',
+        end: '#0f9b0f'
+      },
+      red: {
+        start: '#DC281E',
+        end: '#F00000'
+      }
     }
   },
   textSizes: {
