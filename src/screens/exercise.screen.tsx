@@ -1,47 +1,28 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { Styles } from '../styling/styles.styling';
+import LinearGradient from 'react-native-linear-gradient';
 
-export class ExerciseScreen extends Component {
+import FontAwesome, { Icons } from 'react-native-fontawesome';
+import { Styles } from '../styling/styles.styling';
+import { Exercise } from '../constants/classes/exercise.model';
+import { WORKOUT } from '../constants/mock.data';
+import { ExerciseScreenBarButtons } from '../components/exerciseScreenBarButtons.component';
+import { Workout } from '../constants/classes/workout.model';
+
+interface Props {
+  workout: Workout;
+}
+interface State {}
+
+export class ExerciseScreen extends Component<Props, State> {
+
+  public exercise: Exercise;
+  public workoutIndex: number;
 
   constructor (props) {
     super(props);
-  }
-
-  public failButtons = () => {
-    return (
-      <View
-        style={ footer.failButtons }>
-        <TouchableOpacity
-          style={ footer.failButton }>
-          <Text
-            style={ footer.text }>
-            &times;
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={ footer.failButton }>
-          <Text
-            style={ footer.text }>
-            &times;
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={ footer.failButton }>
-          <Text
-            style={ footer.text }>
-            &times;
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={ footer.failButton }>
-          <Text
-            style={ footer.text }>
-            &times;
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
+    this.workoutIndex = 0;
+    this.exercise = this.props.workout.exercises[this.workoutIndex];
   }
 
   public render () {
@@ -52,7 +33,7 @@ export class ExerciseScreen extends Component {
           style={ header.view }>
           <Text
             style={ header.text }>
-            Exercise Name
+            { this.exercise.name || 'error' }
           </Text>
         </View>
         <View
@@ -61,16 +42,8 @@ export class ExerciseScreen extends Component {
         </View>
         <View
           style={ footer.view }>
-          <TouchableOpacity
-            style={ footer.fail }>
-            <Text
-              style={ footer.text }>&times;</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={ footer.success }>
-            <Text
-              style={ footer.text }>&#10003;</Text>
-          </TouchableOpacity>
+          <ExerciseScreenBarButtons
+            exerciseNote={ this.exercise.exerciseNote } />
         </View>
       </View>
     );
@@ -105,46 +78,17 @@ const header = StyleSheet.create({
 
 const main = StyleSheet.create({
   view: {
-    backgroundColor: 'gray',
-    flex: 6
+    backgroundColor: 'white',
+    flex: 5
   },
   text: {
-    color: 'white'
+    color: 'black'
   }
 });
 
 const footer = StyleSheet.create({
   view: {
-    flex: 1,
-    flexDirection: 'row'
-  },
-  text: {
-    color: 'white',
-    fontSize: Styles.textSizes.large,
-    fontWeight: 'bold',
-    textShadowColor: Styles.shadows.textShadow.textShadowColor,
-    textShadowOffset: Styles.shadows.textShadow.textShadowOffset,
-    textShadowRadius: Styles.shadows.textShadow.textShadowRadius
-  },
-  fail: {
-    alignItems: 'center',
-    backgroundColor: Styles.colors.fail,
-    flex: 1,
-    justifyContent: 'center'
-  },
-  success: {
-    alignItems: 'center',
-    backgroundColor: Styles.colors.success,
-    flex: 1,
-    justifyContent: 'center'
-  },
-  failButtons: {
-    flexDirection: 'row'
-  },
-  failButton: {
-    flex: 2
-  },
-  successButtons: {
+    flex: 2,
     flexDirection: 'row'
   }
 });

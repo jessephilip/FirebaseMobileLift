@@ -31,17 +31,12 @@ export class GreetingScreen extends Component<Props, State> {
     }
   }
 
-  componentDidMount () {
-    // this.setState({ text: '' });
-  }
-
   static navigationOptions = {
     title: 'Up-Lift'
   };
 
   public goTo = (destination: string) => {
-    const { navigate } = this.props.navigation;
-    navigate (destination);
+    this.props.navigation.navigate (destination);
   }
 
   public render () {

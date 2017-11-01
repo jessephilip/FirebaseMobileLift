@@ -50,3 +50,10 @@ export enum ExerciseNoteType {
   fail = 'fail',
   success = 'success'
 }
+
+export enum ResistanceType {
+  barbell = 'barbell',
+  dumbbell = 'dumbbell',
+  kettlebell = 'kettlebell',
+  resistanceBands = 'resistance bands'
+}

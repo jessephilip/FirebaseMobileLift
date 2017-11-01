@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button, AppRegistry } from 'react-native';
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
 import { Styles } from '../styling/styles.styling';
 
-import { weekdayConverter } from '../constants/dateConverter';
-import { monthConverter } from '../constants/dateConverter';
-import { ChallengeCard } from '../components/challengeCard.component';
+import { monthConverter, weekdayConverter } from '../constants/dateConverter';
+import { Workout } from '../constants/classes/workout.model';
+import { WORKOUT } from '../constants/mock.data';
+import { ExerciseModal } from '../components/exerciseModal.component';
 
-interface Props {}
-interface State {}
+interface Props {
+  navigation: any;
+}
+interface State {
+  showExerciseModal: boolean;
+}
 
 export class TodayScreen extends Component<Props, State> {
 
+  public workout: Workout;
+
   constructor (props) {
     super(props);
+    this.workout = WORKOUT;
+
+    this.state = {
+      showExerciseModal: false
+    };
   }
 
   private getDate = (): string => {
     const dateObject = new Date()
-    , month = dateObject.getMonth() + 1
+    , month = dateObject.getMonth()
     , day = dateObject.getDate()
     , year = dateObject.getFullYear()
     ;
@@ -33,13 +46,20 @@ export class TodayScreen extends Component<Props, State> {
           style={ styling.date }>
           { this.getDate() }
         </Text>
-        <View
-          style={ styling.exerciseView }>
-          <Text
-            style={ styling.exerciseTitle }>
-            { 'No exercise planned' }
-          </Text>
-        </View>
+        <TouchableOpacity
+          onPress={ () => this.setState({ showExerciseModal: true }) }>
+          <View
+            style={ styling.exerciseView }>
+            <Text
+              style={ styling.exerciseTitle }>
+              { this.workout.name || 'No exercise planned' }
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <ExerciseModal
+          closeModal={ () => this.setState({ 'showExerciseModal': false }) }
+          isVisible={ this.state.showExerciseModal }
+          workout={ WORKOUT } />
       </View>
     );
   }
