@@ -6,9 +6,10 @@ import * as enums from '../constants/enums';
 interface Props {
   autoCapitalize?: enums.AutoCapitalize;
   autoFocus?: boolean;
-  onBlur?: () => void;
+  backgroundColor?: string;
   keyboardType?: enums.KeyboardType;
   label?: string;
+  onBlur?: () => void;
   onChangeText?: any;
   onFocus?: () => void;
   placeholder?: string;
@@ -29,7 +30,7 @@ export class CustomTextInput extends Component<Props, State> {
   constructor (props, private hasLabel) {
     super(props);
     this.state = {
-      backgroundColor: Styles.colors.primary.dark,
+      backgroundColor: this.props.backgroundColor || Styles.colors.primary.dark,
       borderColor: 'gray',
       borderWidth: 1,
       labelTextColor: Styles.colors.primary.main,
@@ -40,7 +41,7 @@ export class CustomTextInput extends Component<Props, State> {
 
   private onBlur = () => {
     this.setState({
-      backgroundColor: Styles.colors.primary.dark,
+      backgroundColor: this.props.backgroundColor || Styles.colors.primary.dark,
       borderColor: 'gray',
       borderWidth: 1,
       labelTextColor: Styles.colors.primary.light,
