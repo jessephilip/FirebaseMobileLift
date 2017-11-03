@@ -129,12 +129,6 @@ export class CreateWorkoutModal extends Component<Props, State> {
             label='Resistance Type'
             onChangeText={ text => this.setState({ 'resistanceType': text }) }
             selectTextOnFocus={ true } />
-            <Picker
-              selectedValue={this.state.language}
-              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
             <Switch></Switch>
         </ScrollView>
       </View>

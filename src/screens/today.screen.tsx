@@ -8,6 +8,7 @@ import { Workout } from '../constants/classes/workout.model';
 import { WORKOUT } from '../constants/mock.data';
 import { ExerciseModal } from '../components/exerciseModal.component';
 import { CreateWorkoutModal } from '../components/createWorkoutModal';
+import { SearchPicker } from '../components/searchPicker.component';
 
 interface Props {
   navigation: any;
@@ -84,6 +85,7 @@ export class TodayScreen extends Component<Props, State> {
           { this.getDate() }
         </Text>
         { this.exerciseDisplay() }
+        <SearchPicker></SearchPicker>
         <ExerciseModal
           closeModal={ () => this.setState({ 'showExerciseModal': false }) }
           isVisible={ this.state.showExerciseModal }
