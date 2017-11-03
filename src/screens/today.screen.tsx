@@ -7,12 +7,14 @@ import { monthConverter, weekdayConverter } from '../constants/dateConverter';
 import { Workout } from '../constants/classes/workout.model';
 import { WORKOUT } from '../constants/mock.data';
 import { ExerciseModal } from '../components/exerciseModal.component';
+import { CreateWorkoutModal } from '../components/createWorkoutModal';
 
 interface Props {
   navigation: any;
 }
 interface State {
   showExerciseModal: boolean;
+  showCreateWorkoutModal: boolean;
 }
 
 export class TodayScreen extends Component<Props, State> {
@@ -24,7 +26,8 @@ export class TodayScreen extends Component<Props, State> {
     this.workout = WORKOUT;
 
     this.state = {
-      showExerciseModal: false
+      showExerciseModal: false,
+      showCreateWorkoutModal: false,
     };
   }
 
@@ -38,14 +41,9 @@ export class TodayScreen extends Component<Props, State> {
     return `${ monthConverter(month) } ${ day }, ${ year }`;
   }
 
-  public render () {
-    return (
-      <View
-        style={ styling.container }>
-        <Text
-          style={ styling.date }>
-          { this.getDate() }
-        </Text>
+  public exerciseDisplay = () => {
+    if (!this.workout) {
+      return (
         <TouchableOpacity
           onPress={ () => this.setState({ showExerciseModal: true }) }>
           <View
@@ -56,10 +54,43 @@ export class TodayScreen extends Component<Props, State> {
             </Text>
           </View>
         </TouchableOpacity>
+      );
+    } else {
+      return (
+        <TouchableOpacity
+          onPress={ () => this.setState({ showCreateWorkoutModal: true }) }>
+          <View
+            style={ styling.exerciseSubView }>
+            <Text
+              style={ styling.exerciseTitle }>
+              No workout scheduled for today
+            </Text>
+            <Text
+              style={ styling.exerciseSub }>
+              Create workout
+            </Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+  }
+
+  public render () {
+    return (
+      <View
+        style={ styling.container }>
+        <Text
+          style={ styling.date }>
+          { this.getDate() }
+        </Text>
+        { this.exerciseDisplay() }
         <ExerciseModal
           closeModal={ () => this.setState({ 'showExerciseModal': false }) }
           isVisible={ this.state.showExerciseModal }
           workout={ WORKOUT } />
+        <CreateWorkoutModal
+          closeModal={ () => this.setState({ 'showCreateWorkoutModal': false }) }
+          isVisible={ this.state.showCreateWorkoutModal } />
       </View>
     );
   }
@@ -87,8 +118,20 @@ const styling = StyleSheet.create({
     height: 150,
     justifyContent: 'center'
   },
+  exerciseSubView: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: Styles.colors.secondary.dark,
+    height: 150,
+    justifyContent: 'space-around'
+  },
   exerciseTitle: {
     fontSize: Styles.textSizes.normal,
+    textAlign: 'center'
+  },
+  exerciseSub: {
+    fontSize: Styles.textSizes.small,
     textAlign: 'center'
   }
 });
