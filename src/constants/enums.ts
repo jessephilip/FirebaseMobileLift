@@ -57,3 +57,8 @@ export enum ResistanceType {
   kettlebell = 'kettlebell',
   resistanceBands = 'resistance bands'
 }
+
+export enum PickerModes {
+  dialog = 'dialog',
+  dropdown = 'dropdown'
+}

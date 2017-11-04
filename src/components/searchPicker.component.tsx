@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Picker, StyleSheet, Text, TextInput, View } from 'react-native';
 import { EXERCISENAMES } from '../constants/mock.data';
+import * as enums from '../constants/enums';
 
 interface Props {
 
@@ -27,10 +28,11 @@ export class SearchPicker extends Component <Props, State> {
         style={ textInput.container }>
         <TextInput
           style={ textInput.input }
+          autoCapitalize={ enums.AutoCapitalize.none }
+          autoFocus={ true }
           onChangeText={ text => this.setState({ searchText: text }) }
           value={ this.state.searchText }>
         </TextInput>
-        <Text>{ this.state.searchText }</Text>
       </View>
     );
   }
@@ -38,10 +40,13 @@ export class SearchPicker extends Component <Props, State> {
   public pickerRender () {
 
     const itemRenderer = () => {
-      const filteredExercises = EXERCISENAMES.filter(exerciseName => exerciseName.includes(this.state.searchText));
+      const filteredExercises = EXERCISENAMES.filter(exerciseName => exerciseName.toLowerCase().includes(this.state.searchText.toLowerCase()));
       return filteredExercises.map( (exerciseName, i) => {
         return (
-          <Picker.Item key={ i } label={ exerciseName } value={ exerciseName } />
+          <Picker.Item
+            key={ i }
+            label={ exerciseName }
+            value={ exerciseName } />
         );
       });
     };
@@ -49,6 +54,7 @@ export class SearchPicker extends Component <Props, State> {
     return (
       <View>
         <Picker
+          style={ picker.input }
           selectedValue={ this.state.pickerValue }
           onValueChange={ (itemValue, itemIndex) => this.setState({ pickerValue: itemValue }) }>
           { itemRenderer() }
@@ -60,9 +66,6 @@ export class SearchPicker extends Component <Props, State> {
   public render () {
     return (
       <View>
-        <Text>
-          Main Render for SearchPickerComponent
-        </Text>
         { this.searchInputRender() }
         { this.pickerRender() }
       </View>
@@ -72,5 +75,13 @@ export class SearchPicker extends Component <Props, State> {
 
 const textInput = StyleSheet.create({
   container: {},
-  input: {}
+  input: {
+    textAlign: 'center'
+  }
+});
+
+const picker = StyleSheet.create({
+  container: {},
+  input: {
+  },
 });
