@@ -1,0 +1,287 @@
+import React, { Component } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+// third party components
+import FontAwesome, { Icons } from 'react-native-fontawesome';
+
+// styling
+import { Styles } from '../styling/styles.styling';
+
+import * as enums from '../constants/enums';
+import { MuscleCategory, MuscleGroup } from '../constants/enums';
+
+interface Props {
+  exerciseName?: string;
+  prefix?: string;
+  suffix?: string;
+  muscleCategory?: MuscleCategory;
+  primaryMuscleGroup?: MuscleGroup;
+  secondaryMuscleGroup?: MuscleGroup;
+  weight?: number;
+  weightUnit?: string;
+  reps?: number;
+  repType?: string;
+}
+
+interface State {}
+
+export class ExerciseDisplay extends Component <Props, State> {
+
+  constructor (props) {
+    super(props);
+  }
+
+  public setCategoryIcon () {
+    if (this.props.muscleCategory !== MuscleCategory.none) {
+      let icon;
+      switch (this.props.muscleCategory) {
+        case enums.MuscleCategory.arms:
+          return (
+            <Image source={ require('../../assets/icons-96/muscle.png') }/>
+          );
+        case enums.MuscleCategory.back:
+          return (
+            <Image source={ require('../../assets/icons-96/back.png') }/>
+          );
+        case enums.MuscleCategory.chest:
+          return (
+            <Image source={ require('../../assets/icons-96/chest.png') }/>
+          );
+        case enums.MuscleCategory.core:
+          return (
+            <Image source={ require('../../assets/icons-96/prelum.png') }/>
+          );
+        case enums.MuscleCategory.glutes:
+          return (
+            <Image source={ require('../../assets/icons-96/bottom.png') }/>
+          );
+        case enums.MuscleCategory.legs:
+          return (
+            <Image source={ require('../../assets/icons-96/leg.png') }/>
+          );
+        case enums.MuscleCategory.shoulders:
+          return (
+            <Image source={ require('../../assets/icons-96/shoulders.png') }/>
+          );
+        default:
+          return undefined;
+      }
+    }
+  }
+
+  public renderMain () {
+
+    /*  MAIN-TOP  */
+    const renderMainTop = () => {
+      return (
+        <View
+          style={ main.top }>
+          <View
+            style={ main.nameView }>
+            <Text
+              style={ main.nameText }>
+              { this.props.exerciseName || '' }
+            </Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around'
+            }}>
+            <Text
+              style={{
+                color: Styles.colors.primary.main,
+                fontSize: Styles.textSizes.normal
+              }}>
+              { this.props.prefix || '' }
+            </Text>
+            <Text
+              style={{
+                color: Styles.colors.primary.main,
+                fontSize: Styles.textSizes.normal
+              }}>
+              { this.props.suffix || '' }
+            </Text>
+          </View>
+        </View>
+      );
+    };
+
+    /*  MAIN-MIDDLE  */
+    const renderMainMiddle = () => {
+      const renderMuscleGroup = muscleGroup => {
+        if (this.props[muscleGroup] !== MuscleGroup.none) {
+          return (
+            <View
+              style={ main.muscleGroup }>
+              <Text
+                style={ main.metaText }>
+                { this.props[muscleGroup] !== MuscleGroup.none ? '' : 'Primary' }
+              </Text>
+              <Text
+                style={ main.muscleGroupText }>
+                { this.props[muscleGroup] }
+              </Text>
+            </View>
+          );
+        }
+      };
+
+      return (
+        <View
+          style={ main.middle }>
+          <View
+            style={ main.weightAndRepRow }>
+            <View
+              style={ main.weightView }>
+              <Text
+                style={{
+                  color: Styles.colors.primary.main,
+                  fontSize: Styles.textSizes.large
+                }}>
+                { this.props.weight }
+              </Text>
+              <Text
+                style={ main.metaText }>
+                { this.props.weightUnit }
+              </Text>
+            </View>
+            <View
+              style={ main.weightView }>
+              <Text
+                style={{
+                  color: Styles.colors.primary.main,
+                  fontSize: Styles.textSizes.large
+                }}>
+                { this.props.reps || '' }
+              </Text>
+              <Text
+                style={ main.metaText }>
+                { this.props.repType || ''}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={ main.muscleGroupsRow }>
+            { renderMuscleGroup('primaryMuscleGroup') }
+            { renderMuscleGroup('secondaryMuscleGroup') }
+          </View>
+        </View>
+      );
+    };
+
+    /*  MAIN-BOTTOM  */
+    const renderMainBottom = () => {
+      return (
+        <View
+          style={ main.bottom }>
+        </View>
+      );
+    };
+
+    return (
+      <View
+        style={ main.view }>
+        <View
+          style={ main.backgroundImage }>
+          { this.setCategoryIcon() }
+        </View>
+        { renderMainTop() }
+        { renderMainMiddle() }
+        { renderMainBottom() }
+      </View>
+    );
+  }
+
+  public render () {
+    return (
+      <View
+        style={ styling.container }>
+        { this.renderMain() }
+      </View>
+    );
+  }
+}
+
+const styling = StyleSheet.create({
+  container: {
+    alignSelf: 'stretch',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between'
+  },
+});
+
+const main = StyleSheet.create({
+  backgroundImage: {
+    alignItems: 'center',
+    flex: 1,
+    height: '100%',
+    justifyContent: 'center',
+    opacity: .1,
+    position: 'absolute',
+    width: '100%',
+  },
+  bottom: {
+    flex: 1
+  },
+  metaText: {
+    color: Styles.colors.primary.light,
+    fontSize: Styles.textSizes.extraSmall,
+    textAlign: 'center'
+  },
+  middle: {
+    flex: 1
+  },
+  muscleGroupsRow: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  muscleGroup: {
+    backgroundColor: 'transparent',
+    flex: 1,
+    flexDirection: 'column'
+  },
+  muscleGroupText: {
+    color: Styles.colors.primary.main,
+    textAlign: 'center'
+  },
+  nameView: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+    paddingTop: 20
+  },
+  nameText: {
+    color: Styles.colors.secondary.main,
+    fontSize: Styles.textSizes.large
+  },
+  view: {
+    backgroundColor: 'white',
+    flex: 5
+  },
+  text: {
+    color: 'black'
+  },
+  top: {
+    flex: 1
+  },
+  transparent: {
+    backgroundColor: 'transparent'
+  },
+  weightAndRepRow: {
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+  weightView: {
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    flex: 4,
+    justifyContent: 'center',
+  }
+});

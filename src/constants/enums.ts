@@ -35,6 +35,7 @@ export enum MuscleCategory {
   glutes = 'glutes',
   legs = 'legs',
   shoulders = 'shoulders',
+  none = 'none'
 }
 
 export enum MuscleGroup {
@@ -44,6 +45,7 @@ export enum MuscleGroup {
   pectorals = 'pectorals',
   thighs = 'thighs',
   triceps = 'triceps',
+  none = 'none'
 }
 
 export enum ExerciseNoteType {
@@ -55,5 +57,6 @@ export enum ResistanceType {
   barbell = 'barbell',
   dumbbell = 'dumbbell',
   kettlebell = 'kettlebell',
-  resistanceBands = 'resistance bands'
+  resistanceBands = 'resistance bands',
+  none = 'none'
 }

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Image, Modal, StyleSheet, Text, TouchableOpacity, View, ScrollView, Picker, Switch, MaskedView } from 'react-native';
+import {
+  Image,
+  Modal,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  } from 'react-native';
 
 // third party components
 import FontAwesome, { Icons } from 'react-native-fontawesome';
@@ -12,8 +20,9 @@ import { Exercise } from '../constants/classes/exercise.model';
 import { Workout } from '../constants/classes/workout.model';
 
 import * as enums from '../constants/enums';
-import { CustomTextInput } from './customTextInput';
+import { ExpandingInput } from './expandingInput.component';
 import { MuscleCategory, MuscleGroup } from '../constants/enums';
+import { ExerciseDisplay } from './exerciseDisplay.component';
 
 interface Props {
   isVisible: boolean;
@@ -22,47 +31,106 @@ interface Props {
 
 interface State {
   exerciseName: string;
-  muscleCategory: MuscleCategory;
   prefix: string;
-  primaryMuscleGroup: MuscleGroup;
-  repType: string;
-  reps: number;
-  resistanceType: string;
-  secondaryMuscleGroup: MuscleGroup; // drop down with other
   suffix: string;
-  weight: number | string;
+  resistanceType: string;
+  weight: string;
   weightUnit: string;
-  language: string;
+  repType: string;
+  reps: string;
+  muscleCategory: MuscleCategory;
+  primaryMuscleGroup: MuscleGroup;
+  secondaryMuscleGroup: MuscleGroup; // drop down with other
 }
 
 export class CreateWorkoutModal extends Component<Props, State> {
 
+  public exerciseNameSetter = (value: string) => this.setState({ exerciseName: value });
+  public prefixSetter = (value: string) => this.setState({ prefix: value });
+  public suffixSetter = (value: string) => this.setState({ suffix: value });
+  public resistanceTypeSetter = (value: string) => this.setState({ resistanceType: value });
+  public weightSetter = (value: string) => this.setState({ weight: value });
+  public weightUnitSetter = (value: string) => this.setState({ weightUnit: value });
+  public repsSetter = (value: string) => this.setState({ reps: value });
+  public repTypeSetter = (value: string) => this.setState({ repType: value });
+
+  public exerciseInputs;
+  public weightInputs;
+  public repInputs;
+
   constructor (props) {
     super(props);
-    this.state = {
-      language: 'java'
-    };
+    this.state = this.initialState;
+  }
+
+  componentDidMount () {
+    this.exerciseInputs = [
+      { icon: 'user', label: 'Exercise Name', value: this.state.exerciseName, stateSetter: this.exerciseNameSetter },
+      { icon: 'send', label: 'Prefix', value: this.state.prefix, stateSetter: this.prefixSetter },
+      { icon: 'check', label: 'Suffix', value: this.state.suffix, stateSetter: this.suffixSetter }
+    ];
+
+    this.weightInputs = [
+      { icon: 'user', label: 'Resistance Type', value: this.state.resistanceType, stateSetter: this.resistanceTypeSetter },
+      { icon: 'send', label: 'Weight', value: this.state.weight, stateSetter: this.weightSetter },
+      { icon: 'check', label: 'Weight Unit', value: this.state.weightUnit, stateSetter: this.weightUnitSetter }
+    ];
+
+    this.repInputs = [
+      { icon: 'user', label: 'Reps', value: this.state.reps, stateSetter: this.repsSetter },
+      { icon: 'send', label: 'Rep Type', value: this.state.repType, stateSetter: this.repTypeSetter }
+    ];
+  }
+
+  public initialState = {
+    exerciseName: '',
+    prefix: '',
+    suffix: '',
+    muscleCategory: MuscleCategory.none,
+    primaryMuscleGroup: MuscleGroup.none,
+    secondaryMuscleGroup: MuscleGroup.none,
+    repType: '',
+    reps: '',
+    resistanceType: '',
+    weight: '',
+    weightUnit: ''
+  };
+
+  public reset = () => {
+    this.setState(this.initialState);
   }
 
   public renderHeader () {
     return (
       <View
         style={ header.container }>
-        <TouchableOpacity
-          style={[ header.column, { marginRight: 20 } ]}
-          onPress={ this.props.closeModal }>
-          <FontAwesome
-            style={ header.graphic }>
-            { Icons.close }
-          </FontAwesome>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={ header.column }>
-          <FontAwesome
-            style={ header.graphic }>
-            { Icons.check }
-          </FontAwesome>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity
+            style={[ header.column, { marginRight: 20 } ]}
+            onPress={ this.reset }>
+            <FontAwesome
+              style={ header.graphic }>
+              { Icons.trash }
+            </FontAwesome>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={[ header.column, { marginRight: 20 } ]}
+            onPress={ this.props.closeModal }>
+            <FontAwesome
+              style={ header.graphic }>
+              { Icons.close }
+            </FontAwesome>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={ header.column }>
+            <FontAwesome
+              style={ header.graphic }>
+              { Icons.check }
+            </FontAwesome>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -72,70 +140,25 @@ export class CreateWorkoutModal extends Component<Props, State> {
       <View
         style={ main.container }>
         <ScrollView>
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            autoFocus={ true }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Exercise Name'
-            onChangeText={ text => this.setState({ 'exerciseName': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Prefix'
-            onChangeText={ text => this.setState({ 'prefix': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Suffix'
-            onChangeText={ text => this.setState({ 'suffix': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Reps'
-            onChangeText={ text => this.setState({ 'reps': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Rep Type'
-            onChangeText={ text => this.setState({ 'repType': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Weight'
-            onChangeText={ text => this.setState({ 'weight': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Weight Unit'
-            onChangeText={ text => this.setState({ 'weightUnit': text }) }
-            selectTextOnFocus={ true } />
-          <CustomTextInput
-            autoCapitalize={ enums.AutoCapitalize.none }
-            backgroundColor='white'
-            keyboardType={ enums.KeyboardType['email-address'] }
-            label='Resistance Type'
-            onChangeText={ text => this.setState({ 'resistanceType': text }) }
-            selectTextOnFocus={ true } />
-            <Picker
-              selectedValue={this.state.language}
-              onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})}>
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
-            </Picker>
-            <Switch></Switch>
+          <ExerciseDisplay
+            exerciseName={ this.state.exerciseName }
+            prefix={ this.state.prefix }
+            suffix={ this.state.suffix }
+
+            >
+          </ExerciseDisplay>
+          <ExpandingInput
+            baseHeight={ 75 }
+            inputs={ this.exerciseInputs }
+            title={{ icon: 'tag', label: 'Exercise' }}/>
+          <ExpandingInput
+            baseHeight={ 75 }
+            inputs={ this.weightInputs }
+            title={{ icon: 'tag', label: 'Resistance' }}/>
+          <ExpandingInput
+            baseHeight={ 75 }
+            inputs={ this.repInputs }
+            title={{ icon: 'tag', label: 'Reps' }}/>
         </ScrollView>
       </View>
     );
@@ -183,7 +206,7 @@ const header = StyleSheet.create({
     backgroundColor: Styles.colors.primary.dark,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     padding: 20
   },
   column: {
@@ -207,7 +230,6 @@ const header = StyleSheet.create({
 const main = StyleSheet.create({
   container: {
     flex: 7,
-    padding: 20
   }
 });
 

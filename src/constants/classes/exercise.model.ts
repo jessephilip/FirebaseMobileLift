@@ -16,7 +16,7 @@ export interface OptionalProperties {
   startDate?: Date;
   suffix?: string;
   weightUnit?: string;
-  weight?: number | string;
+  weight?: string;
   workout?: Workout;
 }
 
@@ -38,7 +38,7 @@ export class Exercise {
   private _suffix: string;
   private _uid: string;
   private _weightUnit: string;
-  private _weight: number | string;
+  private _weight: string;
   private _workout: Workout;
 
   /*  GETTERS and SETTERS  */
@@ -94,8 +94,8 @@ export class Exercise {
   public get weightUnit (): string { return this._weightUnit; }
   public set weightUnit (value: string) { this._weightUnit = value; }
 
-  public get weight (): number | string  { return this._weight; }
-  public set weight (value: number | string) {
+  public get weight (): string  { return this._weight; }
+  public set weight (value: string) {
     this._weight = value;
     this.isWeighted = Boolean(value);
   }
