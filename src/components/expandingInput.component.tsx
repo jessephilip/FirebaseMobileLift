@@ -24,7 +24,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Modal } from 'react-native';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
@@ -39,6 +39,7 @@ interface Props {
     stateSetter: (value) => void
   }[];
   title: { icon: string, label: string };
+  type: string;
 }
 
 interface State {
@@ -70,11 +71,23 @@ export class ExpandingInput extends Component <Props, State> {
   }
 
   public subComponentRender = () => {
-    if (this.state.isExpanded) {
+    if (this.props.type === 'text' && this.state.isExpanded) {
       return this.props.inputs.map( (input, index) => {
         return (
-          <SubComponent
+          <SubText
             key={ index }
+            index={ index }
+            height={ this.props.baseHeight }
+            input={ input } />
+        );
+      });
+    }
+    if (this.props.type === 'picker' && this.state.isExpanded) {
+      return this.props.inputs.map( (input, index) => {
+        return (
+          <SubPicker
+            key={ index }
+            index={ index }
             height={ this.props.baseHeight }
             input={ input } />
         );
@@ -84,7 +97,8 @@ export class ExpandingInput extends Component <Props, State> {
 
   public expandableRender = () => {
     return (
-      <View
+      <TouchableOpacity
+        onPress={ () => this.toggleExpansion() }
         style={[ expandable.container ]}>
         <View
           style={ expandable.iconAndLabel }>
@@ -100,15 +114,14 @@ export class ExpandingInput extends Component <Props, State> {
           </Text>
         </View>
         <View>
-          <TouchableOpacity
-            onPress={ () => this.toggleExpansion() }>
+          <View>
             <Text
               style={[ expandable.expandIcon, { color: this.state.color } ]}>
               <FontAwesome>{ this.state.isExpanded ? Icons.chevronDown : Icons.chevronRight }</FontAwesome>
             </Text>
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -156,6 +169,7 @@ const expandable = StyleSheet.create({
 
 interface SubProps {
   height: number;
+  index: number;
   input: {
     icon: string,
     label: string,
@@ -169,7 +183,99 @@ interface SubState {
   value: string;
 }
 
-class SubComponent extends Component <SubProps, SubState> {
+class SubText extends Component <SubProps, SubState> {
+
+  public componentRef;
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      color: Styles.colors.primary.light,
+      value: this.props.input.value
+    };
+  }
+
+  componentDidMount () {
+    const index = `input${this.props.index}`;
+    this.componentRef = this.refs[index];
+    if (index === 'input0') {
+      this.componentRef.focus();
+    }
+  }
+
+  public onChangeText = (text: string): void => {
+    this.setState({ value: text });
+    this.props.input.stateSetter(text);
+  }
+
+  public render () {
+    return (
+      <View
+        style={[ subText.view, { height: this.props.height } ]}>
+        <Text
+          style={[ subText.graphic, { color: this.state.color } ]}>
+          <FontAwesome>
+            { Icons[this.props.input.icon] }
+          </FontAwesome>
+        </Text>
+        <TextInput
+          ref={ `input${this.props.index}` }
+          style={[ subText.textInput, { borderColor: this.state.color } ]}
+          onBlur={ () => this.setState({ color: Styles.colors.primary.light }) }
+          onChangeText={ text => this.onChangeText(text) }
+          onFocus={ () => this.setState({ color: Styles.colors.secondary.light }) }
+          placeholder={ this.props.input.label }
+          placeholderTextColor={ Styles.colors.primary.light }
+          selectionColor={ this.state.color }
+          value={ this.state.value }>
+        </TextInput>
+      </View>
+    );
+  }
+}
+
+const subText = StyleSheet.create({
+  view: {
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: Styles.colors.primary.light,
+    flexDirection: 'row',
+    paddingLeft: 20,
+    paddingRight: 20
+  },
+  graphic: {
+    color: Styles.colors.primary.light,
+    fontSize: Styles.textSizes.normal,
+    marginRight: 20,
+    width: 25
+  },
+  textInput: {
+    borderWidth: 0.5,
+    flex: 1,
+    paddingLeft: 10,
+    height: 40,
+  }
+});
+
+interface SubProps {
+  height: number;
+  index: number;
+  input: {
+    icon: string,
+    label: string,
+    value: string,
+    stateSetter: (value) => void
+  };
+}
+
+interface SubState {
+  color: string;
+  value: string;
+}
+
+class SubPicker extends Component <SubProps, SubState> {
+
+  public componentRef;
 
   constructor (props) {
     super(props);
@@ -187,29 +293,26 @@ class SubComponent extends Component <SubProps, SubState> {
   public render () {
     return (
       <View
-        style={[ subComponent.view, { height: this.props.height } ]}>
+        style={[ subPicker.view, { height: this.props.height } ]}>
         <Text
-          style={[ subComponent.graphic, { color: this.state.color } ]}>
+          style={[ subPicker.graphic, { color: this.state.color } ]}>
           <FontAwesome>
             { Icons[this.props.input.icon] }
           </FontAwesome>
         </Text>
-        <TextInput
-          style={[ subComponent.textInput, { borderColor: this.state.color } ]}
-          onBlur={ () => this.setState({ color: Styles.colors.primary.light }) }
-          onChangeText={ text => this.onChangeText(text) }
-          onFocus={ () => this.setState({ color: Styles.colors.secondary.light }) }
-          placeholder={ this.props.input.label }
-          placeholderTextColor={ Styles.colors.primary.light }
-          selectionColor={ this.state.color }
-          value={ this.state.value }>
-        </TextInput>
+        <TouchableOpacity>
+          <Text>
+            { this.props.input.label }
+          </Text>
+        </TouchableOpacity>
+        <Modal>
+        </Modal>
       </View>
     );
   }
 }
 
-const subComponent = StyleSheet.create({
+const subPicker = StyleSheet.create({
   view: {
     alignItems: 'center',
     borderBottomWidth: 1,

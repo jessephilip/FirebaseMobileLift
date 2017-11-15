@@ -114,7 +114,8 @@ export class CreateWorkoutModal extends Component<Props, State> {
             </FontAwesome>
           </TouchableOpacity>
         </View>
-        <View>
+        <View
+          style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={[ header.column, { marginRight: 20 } ]}
             onPress={ this.props.closeModal }>
@@ -138,27 +139,46 @@ export class CreateWorkoutModal extends Component<Props, State> {
   public renderMain = () => {
     return (
       <View
-        style={ main.container }>
-        <ScrollView>
+        style={[ main.container, { flex: 7 } ]}>
+        <View
+          style={{ flex: 1 }}>
           <ExerciseDisplay
             exerciseName={ this.state.exerciseName }
             prefix={ this.state.prefix }
             suffix={ this.state.suffix }
-
-            >
+            resistanceType={ this.state.resistanceType }
+            weight={ this.state.weight }
+            weightUnit={ this.state.weightUnit }
+            reps={ this.state.reps }
+            repType={ this.state.repType }
+            muscleCategory={ this.state.muscleCategory }
+            primaryMuscleGroup={ this.state.primaryMuscleGroup }
+            secondaryMuscleGroup={ this.state.secondaryMuscleGroup }
+            showPlaceholders={ true }>
           </ExerciseDisplay>
+        </View>
+        <ScrollView
+          style={{ flex: 7 }}>
           <ExpandingInput
             baseHeight={ 75 }
             inputs={ this.exerciseInputs }
-            title={{ icon: 'tag', label: 'Exercise' }}/>
+            title={{ icon: 'tag', label: 'Exercise' }}
+            type='text'/>
           <ExpandingInput
             baseHeight={ 75 }
             inputs={ this.weightInputs }
-            title={{ icon: 'tag', label: 'Resistance' }}/>
+            title={{ icon: 'tag', label: 'Resistance' }}
+            type='text'/>
           <ExpandingInput
             baseHeight={ 75 }
             inputs={ this.repInputs }
-            title={{ icon: 'tag', label: 'Reps' }}/>
+            title={{ icon: 'tag', label: 'Reps' }}
+            type='text'/>
+          <ExpandingInput
+            baseHeight={ 75 }
+            inputs={ this.repInputs }
+            title={{ icon: 'tag', label: 'Groups' }}
+            type='picker'/>
         </ScrollView>
       </View>
     );

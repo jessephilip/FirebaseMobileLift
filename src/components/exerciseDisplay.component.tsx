@@ -17,18 +17,51 @@ interface Props {
   muscleCategory?: MuscleCategory;
   primaryMuscleGroup?: MuscleGroup;
   secondaryMuscleGroup?: MuscleGroup;
-  weight?: number;
+  weight?: string;
   weightUnit?: string;
-  reps?: number;
+  reps?: string;
   repType?: string;
+  resistanceType?: string;
+  height?: number;
+
+  showPlaceholders?: boolean;
 }
 
 interface State {}
 
 export class ExerciseDisplay extends Component <Props, State> {
 
+  public placeholders = {
+    exerciseName: 'name',
+    prefix: 'prefix',
+    suffix: 'suffix',
+    muscleCategory: 'category',
+    primaryMuscleGroup: 'primary',
+    secondaryMuscleGroup: 'secondary',
+    weight: 'weight',
+    weightUnit: 'weight unit',
+    reps: 'reps',
+    repType: 'rep type',
+    resistanceType: 'resistance type',
+  };
+
+  public setPlaceholders (input: string): string {
+    if (this.props.showPlaceholders) {
+      return this.placeholders[input];
+    }
+    return '';
+  }
+
   constructor (props) {
     super(props);
+  }
+
+  componentDidMount () {
+    console.log({
+      category: this.props.muscleCategory,
+      primary: this.props.primaryMuscleGroup,
+      secondary: this.props.secondaryMuscleGroup,
+    });
   }
 
   public setCategoryIcon () {
@@ -80,7 +113,7 @@ export class ExerciseDisplay extends Component <Props, State> {
             style={ main.nameView }>
             <Text
               style={ main.nameText }>
-              { this.props.exerciseName || '' }
+              { this.props.exerciseName || this.setPlaceholders('exerciseName') }
             </Text>
           </View>
           <View
@@ -93,14 +126,14 @@ export class ExerciseDisplay extends Component <Props, State> {
                 color: Styles.colors.primary.main,
                 fontSize: Styles.textSizes.normal
               }}>
-              { this.props.prefix || '' }
+              { this.props.prefix || this.setPlaceholders('prefix') }
             </Text>
             <Text
               style={{
                 color: Styles.colors.primary.main,
                 fontSize: Styles.textSizes.normal
               }}>
-              { this.props.suffix || '' }
+              { this.props.suffix || this.setPlaceholders('suffix') }
             </Text>
           </View>
         </View>
@@ -110,6 +143,7 @@ export class ExerciseDisplay extends Component <Props, State> {
     /*  MAIN-MIDDLE  */
     const renderMainMiddle = () => {
       const renderMuscleGroup = muscleGroup => {
+        console.log(this.props[muscleGroup]);
         if (this.props[muscleGroup] !== MuscleGroup.none) {
           return (
             <View
@@ -120,7 +154,7 @@ export class ExerciseDisplay extends Component <Props, State> {
               </Text>
               <Text
                 style={ main.muscleGroupText }>
-                { this.props[muscleGroup] }
+                { this.props[muscleGroup] || this.setPlaceholders(muscleGroup) }
               </Text>
             </View>
           );
@@ -139,11 +173,11 @@ export class ExerciseDisplay extends Component <Props, State> {
                   color: Styles.colors.primary.main,
                   fontSize: Styles.textSizes.large
                 }}>
-                { this.props.weight }
+                { this.props.weight || this.setPlaceholders('weight') }
               </Text>
               <Text
                 style={ main.metaText }>
-                { this.props.weightUnit }
+                { this.props.weightUnit || this.setPlaceholders('weightUnit') }
               </Text>
             </View>
             <View
@@ -153,11 +187,11 @@ export class ExerciseDisplay extends Component <Props, State> {
                   color: Styles.colors.primary.main,
                   fontSize: Styles.textSizes.large
                 }}>
-                { this.props.reps || '' }
+                { this.props.reps || this.setPlaceholders('reps') }
               </Text>
               <Text
                 style={ main.metaText }>
-                { this.props.repType || ''}
+                { this.props.repType || this.setPlaceholders('repType') }
               </Text>
             </View>
           </View>
@@ -196,7 +230,7 @@ export class ExerciseDisplay extends Component <Props, State> {
   public render () {
     return (
       <View
-        style={ styling.container }>
+        style={[ styling.container, { height: this.props.height || 300 } ]}>
         { this.renderMain() }
       </View>
     );
