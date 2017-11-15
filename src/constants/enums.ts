@@ -60,3 +60,8 @@ export enum ResistanceType {
   resistanceBands = 'resistance bands',
   none = 'none'
 }
+
+export enum PickerModes {
+  dialog = 'dialog',
+  dropdown = 'dropdown'
+}

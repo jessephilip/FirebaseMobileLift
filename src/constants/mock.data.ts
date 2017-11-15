@@ -47,3 +47,16 @@ const exercises: Exercise[] = [
 ];
 
 export const WORKOUT: Workout = new Workout ('Full Body Pump', exercises);
+
+export const EXERCISENAMES = [
+  'Bench Press',
+  'Butterfly',
+  'Chin-up',
+  'Deadlift',
+  'Dip',
+  'Lunge',
+  'Pull-up',
+  'Push-up',
+  'Skull Crusher',
+  'Squat',
+];
