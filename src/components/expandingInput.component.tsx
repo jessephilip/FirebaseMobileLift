@@ -29,6 +29,7 @@ import { StyleSheet, Text, TouchableOpacity, View, TextInput, Modal } from 'reac
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import { Styles } from '../styling/styles.styling';
+import { SearchPicker } from './searchPicker.component';
 
 interface Props {
   baseHeight: number;
@@ -89,7 +90,7 @@ export class ExpandingInput extends Component <Props, State> {
             key={ index }
             index={ index }
             height={ this.props.baseHeight }
-            input={ input } />
+            input={ input }/>
         );
       });
     }
@@ -257,7 +258,7 @@ const subText = StyleSheet.create({
   }
 });
 
-interface SubProps {
+interface PickerProps {
   height: number;
   index: number;
   input: {
@@ -268,12 +269,13 @@ interface SubProps {
   };
 }
 
-interface SubState {
+interface PickerState {
   color: string;
+  modalIsVisible: boolean;
   value: string;
 }
 
-class SubPicker extends Component <SubProps, SubState> {
+class SubPicker extends Component <PickerProps, PickerState> {
 
   public componentRef;
 
@@ -281,6 +283,7 @@ class SubPicker extends Component <SubProps, SubState> {
     super(props);
     this.state = {
       color: Styles.colors.primary.light,
+      modalIsVisible: false,
       value: this.props.input.value
     };
   }
@@ -300,12 +303,31 @@ class SubPicker extends Component <SubProps, SubState> {
             { Icons[this.props.input.icon] }
           </FontAwesome>
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={ () => this.setState({ modalIsVisible: true }) }>
           <Text>
             { this.props.input.label }
           </Text>
         </TouchableOpacity>
-        <Modal>
+        <Modal
+          animationType='slide'
+          transparent={ true }
+          visible={ this.state.modalIsVisible }>
+          <View
+            style={ subPicker.modalView }>
+            <TouchableOpacity
+              style={ subPicker.modalHeader }
+              onPress={ () => this.setState({ modalIsVisible: false })}>
+            </TouchableOpacity>
+            <View
+              style={ subPicker.modalMain }>
+              <SearchPicker></SearchPicker>
+            </View>
+            <TouchableOpacity
+              style={ subPicker.modalFooter }
+              onPress={ () => this.setState({ modalIsVisible: false })}>
+            </TouchableOpacity>
+          </View>
         </Modal>
       </View>
     );
@@ -332,5 +354,21 @@ const subPicker = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     height: 40,
+  },
+  modalView: {
+    backgroundColor: 'rgba(0,0,0,0.75)',
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  modalHeader: {
+    flex: 2
+  },
+  modalMain: {
+    backgroundColor: 'white',
+    flex: 4,
+    justifyContent: 'center',
+  },
+  modalFooter: {
+    flex: 2
   }
 });
