@@ -1,18 +1,17 @@
 import { ExerciseNote } from './exerciseNote.model';
 import { Workout } from './workout.model';
-import { MuscleCategory, MuscleGroup, ResistanceType } from '../enums';
 import * as helpers from '../helpers';
 
 export interface OptionalProperties {
   endDate?: Date;
   exerciseNote?: ExerciseNote;
-  muscleCategory?: MuscleCategory;
+  muscleCategory?: string;
   prefix?: string;
-  primaryMuscleGroup?: MuscleGroup;
+  primaryMuscleGroup?: string;
   reps?: number;
   repType?: string;
-  resistanceType?: ResistanceType;
-  secondaryMuscleGroup?: MuscleGroup;
+  resistanceType?: string;
+  secondaryMuscleGroup?: string;
   startDate?: Date;
   suffix?: string;
   weightUnit?: string;
@@ -27,13 +26,13 @@ export class Exercise {
   private _exerciseNote: ExerciseNote;
   private _isWeighted: boolean;
   private _name: string;
-  private _muscleCategory: MuscleCategory;
+  private _muscleCategory: string;
   private _prefix: string;
-  private _primaryMuscleGroup: MuscleGroup;
+  private _primaryMuscleGroup: string;
   private _reps: number;
   private _repType: string;
-  private _resistanceType: ResistanceType;
-  private _secondaryMuscleGroup: MuscleGroup;
+  private _resistanceType: string;
+  private _secondaryMuscleGroup: string;
   private _startDate: Date;
   private _suffix: string;
   private _uid: string;
@@ -58,8 +57,8 @@ export class Exercise {
   public get isWeighted (): boolean { return this._isWeighted; }
   public set isWeighted (value: boolean) { this._isWeighted = value; }
 
-  public get muscleCategory (): MuscleCategory { return this._muscleCategory; }
-  public set muscleCategory (value: MuscleCategory) { this._muscleCategory = value; }
+  public get muscleCategory (): string { return this._muscleCategory; }
+  public set muscleCategory (value: string) { this._muscleCategory = value; }
 
   public get name (): string { return this._name; }
   public set name (value: string) { this._name = value; }
@@ -67,20 +66,20 @@ export class Exercise {
   public get prefix (): string { return this._prefix; }
   public set prefix (value: string) { this._prefix = value; }
 
-  public get primaryMuscleGroup (): MuscleGroup { return this._primaryMuscleGroup; }
-  public set primaryMuscleGroup (value: MuscleGroup) { this._primaryMuscleGroup = value; }
+  public get primaryMuscleGroup (): string { return this._primaryMuscleGroup; }
+  public set primaryMuscleGroup (value: string) { this._primaryMuscleGroup = value; }
 
   public get reps (): number { return this._reps; }
   public set reps (value: number) { this._reps = value; }
 
-  public get resistanceType (): ResistanceType { return this._resistanceType; }
-  public set resistanceType (value: ResistanceType) { this._resistanceType = value; }
+  public get resistanceType (): string { return this._resistanceType; }
+  public set resistanceType (value: string) { this._resistanceType = value; }
 
   public get repType (): string { return this._repType; }
   public set repType (value: string) { this._repType = value; }
 
-  public get secondaryMuscleGroup (): MuscleGroup { return this._secondaryMuscleGroup; }
-  public set secondaryMuscleGroup (value: MuscleGroup) { this._secondaryMuscleGroup = value; }
+  public get secondaryMuscleGroup (): string { return this._secondaryMuscleGroup; }
+  public set secondaryMuscleGroup (value: string) { this._secondaryMuscleGroup = value; }
 
   public get startDate (): Date { return this._startDate; }
   public set startDate (value: Date) { this._startDate = value; }

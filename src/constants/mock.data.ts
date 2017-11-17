@@ -2,7 +2,6 @@ import { Workout } from './classes/workout.model';
 // TODO: Set this up as coming from the database. This is just mock data right now.
 
 import { Exercise, OptionalProperties } from './classes/exercise.model';
-import { MuscleCategory, MuscleGroup, ResistanceType } from './enums';
 
 export const CURRENTCHALLENGES = [
   { name: 'Drop and Give Me!', type: 'Set Number', muscleGroup: 'chest', amount: 20, exercise: 'push up', points: 5, isActiveChallenge: true },
@@ -29,25 +28,6 @@ export const PASTCHALLENGES = [
   { name: 'Gonna Make You Jump!', type: 'Timed', muscleGroup: 'legs', amount: '60s', exercise: 'half tuck jump', points: 30 }
 ];
 
-const secondExerciseProps: OptionalProperties = {
-  muscleCategory: MuscleCategory.chest,
-  primaryMuscleGroup: MuscleGroup.pectorals,
-  reps: 20,
-  repType: 'reps',
-  resistanceType: ResistanceType.barbell,
-  secondaryMuscleGroup: MuscleGroup.pectorals,
-  weightUnit: 'lbs',
-  weight: 175
-};
-
-const exercises: Exercise[] = [
-  new Exercise('Bicep Curl', 'iuyadfhan'),
-  new Exercise('Bench Press', 'iuyadfhan', secondExerciseProps),
-  new Exercise('Pull-up', 'iuyadfhan')
-];
-
-export const WORKOUT: Workout = new Workout ('Full Body Pump', exercises);
-
 export const EXERCISENAMES = [
   'Bench Press',
   'Butterfly',
@@ -60,3 +40,52 @@ export const EXERCISENAMES = [
   'Skull Crusher',
   'Squat',
 ];
+
+/* cust Enums for this app */
+export const MUSCLECATEGORY = [
+  'arms',
+  'back',
+  'chest',
+  'core',
+  'glutes',
+  'legs',
+  'shoulders',
+  'none'
+];
+
+export const MUSCLEGROUP = [
+  'biceps',
+  'cavs',
+  'forearms',
+  'pectorals',
+  'thighs',
+  'triceps',
+  'none'
+];
+
+export const RESISTANCETYPE = [
+   'barbell',
+   'dumbbell',
+   'kettlebell',
+   'resistance bands',
+   'none'
+];
+
+const secondExerciseProps: OptionalProperties = {
+  muscleCategory: MUSCLECATEGORY[2],
+  primaryMuscleGroup: MUSCLEGROUP[3],
+  reps: 20,
+  repType: 'reps',
+  resistanceType: RESISTANCETYPE[0],
+  secondaryMuscleGroup: MUSCLEGROUP[3],
+  weightUnit: 'lbs',
+  weight: '175'
+};
+
+const exercises: Exercise[] = [
+  new Exercise('Bicep Curl', 'iuyadfhan'),
+  new Exercise('Bench Press', 'iuyadfhan', secondExerciseProps),
+  new Exercise('Pull-up', 'iuyadfhan')
+];
+
+export const WORKOUT: Workout = new Workout ('Full Body Pump', exercises);

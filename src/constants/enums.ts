@@ -26,39 +26,9 @@ export enum ModalAnimationType {
   fade = 'fade'
 }
 
-/* cust Enums for this app */
-export enum MuscleCategory {
-  arms = 'arms',
-  back = 'back',
-  chest = 'chest',
-  core = 'core',
-  glutes = 'glutes',
-  legs = 'legs',
-  shoulders = 'shoulders',
-  none = 'none'
-}
-
-export enum MuscleGroup {
-  biceps = 'biceps',
-  cavs = 'cavs',
-  forearm = 'forearms',
-  pectorals = 'pectorals',
-  thighs = 'thighs',
-  triceps = 'triceps',
-  none = 'none'
-}
-
 export enum ExerciseNoteType {
   fail = 'fail',
   success = 'success'
-}
-
-export enum ResistanceType {
-  barbell = 'barbell',
-  dumbbell = 'dumbbell',
-  kettlebell = 'kettlebell',
-  resistanceBands = 'resistance bands',
-  none = 'none'
 }
 
 export enum PickerModes {
