@@ -61,31 +61,31 @@ export class ExerciseModal extends Component<Props, State> {
   public setCategoryIcon () {
     let icon;
     switch (this.props.workout.exercises[this.state.exerciseIndex].muscleCategory) {
-      case enums.MuscleCategory.arms:
+      case 'arms':
         return (
           <Image source={ require('../../assets/icons-96/muscle.png') }/>
         );
-      case enums.MuscleCategory.back:
+      case 'back':
         return (
           <Image source={ require('../../assets/icons-96/back.png') }/>
         );
-      case enums.MuscleCategory.chest:
+      case 'chest':
         return (
           <Image source={ require('../../assets/icons-96/chest.png') }/>
         );
-      case enums.MuscleCategory.core:
+      case 'core':
         return (
           <Image source={ require('../../assets/icons-96/prelum.png') }/>
         );
-      case enums.MuscleCategory.glutes:
+      case 'glutes':
         return (
           <Image source={ require('../../assets/icons-96/bottom.png') }/>
         );
-      case enums.MuscleCategory.legs:
+      case 'legs':
         return (
           <Image source={ require('../../assets/icons-96/leg.png') }/>
         );
-      case enums.MuscleCategory.shoulders:
+      case 'shoulders':
         return (
           <Image source={ require('../../assets/icons-96/shoulders.png') }/>
         );

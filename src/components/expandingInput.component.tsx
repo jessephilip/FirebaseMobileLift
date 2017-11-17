@@ -30,6 +30,7 @@ import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import { Styles } from '../styling/styles.styling';
 import { SearchPicker } from './searchPicker.component';
+import { MuscleGroup } from '../constants/enums';
 
 interface Props {
   baseHeight: number;
@@ -321,7 +322,9 @@ class SubPicker extends Component <PickerProps, PickerState> {
             </TouchableOpacity>
             <View
               style={ subPicker.modalMain }>
-              <SearchPicker></SearchPicker>
+              <SearchPicker
+                choices={ MuscleGroup }
+                values={ this.props.input.value }></SearchPicker>
             </View>
             <TouchableOpacity
               style={ subPicker.modalFooter }

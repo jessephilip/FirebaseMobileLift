@@ -21,8 +21,10 @@ import { Workout } from '../constants/classes/workout.model';
 
 import * as enums from '../constants/enums';
 import { ExpandingInput } from './expandingInput.component';
-import { MuscleCategory, MuscleGroup } from '../constants/enums';
 import { ExerciseDisplay } from './exerciseDisplay.component';
+
+// mock data
+import { MUSCLECATEGORY, MUSCLEGROUP, RESISTANCETYPE } from '../constants/mock.data';
 
 interface Props {
   isVisible: boolean;
@@ -38,9 +40,9 @@ interface State {
   weightUnit: string;
   repType: string;
   reps: string;
-  muscleCategory: MuscleCategory;
-  primaryMuscleGroup: MuscleGroup;
-  secondaryMuscleGroup: MuscleGroup; // drop down with other
+  muscleCategory: string;
+  primaryMuscleGroup: string;
+  secondaryMuscleGroup: string; // drop down with other
 }
 
 export class CreateWorkoutModal extends Component<Props, State> {
@@ -53,10 +55,14 @@ export class CreateWorkoutModal extends Component<Props, State> {
   public weightUnitSetter = (value: string) => this.setState({ weightUnit: value });
   public repsSetter = (value: string) => this.setState({ reps: value });
   public repTypeSetter = (value: string) => this.setState({ repType: value });
+  public categorySetter = (value: string) => this.setState({ muscleCategory: value });
+  public primarySetter = (value: string) => this.setState({ primaryMuscleGroup: value });
+  public secondarySetter = (value: string) => this.setState({ secondaryMuscleGroup: value });
 
   public exerciseInputs;
   public weightInputs;
   public repInputs;
+  public groupInputs;
 
   constructor (props) {
     super(props);
@@ -80,15 +86,21 @@ export class CreateWorkoutModal extends Component<Props, State> {
       { icon: 'user', label: 'Reps', value: this.state.reps, stateSetter: this.repsSetter },
       { icon: 'send', label: 'Rep Type', value: this.state.repType, stateSetter: this.repTypeSetter }
     ];
+
+    this.groupInputs = [
+      { icon: 'user', label: 'Exercise Category', value: this.state.muscleCategory, stateSetter: this.repsSetter },
+      { icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.repTypeSetter },
+      { icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.repTypeSetter }
+    ];
   }
 
   public initialState = {
     exerciseName: '',
     prefix: '',
     suffix: '',
-    muscleCategory: MuscleCategory.none,
-    primaryMuscleGroup: MuscleGroup.none,
-    secondaryMuscleGroup: MuscleGroup.none,
+    muscleCategory: MUSCLECATEGORY[MUSCLECATEGORY.length - 1],
+    primaryMuscleGroup: MUSCLEGROUP[MUSCLEGROUP.length - 1],
+    secondaryMuscleGroup: MUSCLEGROUP[MUSCLEGROUP.length - 1],
     repType: '',
     reps: '',
     resistanceType: '',
@@ -160,23 +172,23 @@ export class CreateWorkoutModal extends Component<Props, State> {
         <ScrollView
           style={{ flex: 7 }}>
           <ExpandingInput
-            baseHeight={ 75 }
+            baseHeight={ 50 }
             inputs={ this.exerciseInputs }
             title={{ icon: 'tag', label: 'Exercise' }}
             type='text'/>
           <ExpandingInput
-            baseHeight={ 75 }
+            baseHeight={ 50 }
             inputs={ this.weightInputs }
             title={{ icon: 'tag', label: 'Resistance' }}
             type='text'/>
           <ExpandingInput
-            baseHeight={ 75 }
+            baseHeight={ 50 }
             inputs={ this.repInputs }
             title={{ icon: 'tag', label: 'Reps' }}
             type='text'/>
           <ExpandingInput
-            baseHeight={ 75 }
-            inputs={ this.repInputs }
+            baseHeight={ 50 }
+            inputs={ this.groupInputs }
             title={{ icon: 'tag', label: 'Groups' }}
             type='picker'/>
         </ScrollView>

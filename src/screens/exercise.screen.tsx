@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import { Styles } from '../styling/styles.styling';

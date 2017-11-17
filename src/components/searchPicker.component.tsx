@@ -4,7 +4,8 @@ import { EXERCISENAMES } from '../constants/mock.data';
 import * as enums from '../constants/enums';
 
 interface Props {
-
+  choices: any;
+  value: any;
 }
 
 interface State {
@@ -20,6 +21,10 @@ export class SearchPicker extends Component <Props, State> {
       pickerValue: '',
       searchText: ''
     };
+  }
+
+  componentDidMount () {
+    console.log(this.props.values);
   }
 
   public searchInputRender () {

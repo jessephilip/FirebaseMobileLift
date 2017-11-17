@@ -8,15 +8,15 @@ import FontAwesome, { Icons } from 'react-native-fontawesome';
 import { Styles } from '../styling/styles.styling';
 
 import * as enums from '../constants/enums';
-import { MuscleCategory, MuscleGroup } from '../constants/enums';
+import { MUSCLECATEGORY, MUSCLEGROUP } from '../constants/mock.data';
 
 interface Props {
   exerciseName?: string;
   prefix?: string;
   suffix?: string;
-  muscleCategory?: MuscleCategory;
-  primaryMuscleGroup?: MuscleGroup;
-  secondaryMuscleGroup?: MuscleGroup;
+  muscleCategory?: string;
+  primaryMuscleGroup?: string;
+  secondaryMuscleGroup?: string;
   weight?: string;
   weightUnit?: string;
   reps?: string;
@@ -65,34 +65,34 @@ export class ExerciseDisplay extends Component <Props, State> {
   }
 
   public setCategoryIcon () {
-    if (this.props.muscleCategory !== MuscleCategory.none) {
+    if (this.props.muscleCategory !== 'none') {
       let icon;
       switch (this.props.muscleCategory) {
-        case enums.MuscleCategory.arms:
+        case 'arms':
           return (
             <Image source={ require('../../assets/icons-96/muscle.png') }/>
           );
-        case enums.MuscleCategory.back:
+        case 'back':
           return (
             <Image source={ require('../../assets/icons-96/back.png') }/>
           );
-        case enums.MuscleCategory.chest:
+        case 'chest':
           return (
             <Image source={ require('../../assets/icons-96/chest.png') }/>
           );
-        case enums.MuscleCategory.core:
+        case 'core':
           return (
             <Image source={ require('../../assets/icons-96/prelum.png') }/>
           );
-        case enums.MuscleCategory.glutes:
+        case 'glutes':
           return (
             <Image source={ require('../../assets/icons-96/bottom.png') }/>
           );
-        case enums.MuscleCategory.legs:
+        case 'legs':
           return (
             <Image source={ require('../../assets/icons-96/leg.png') }/>
           );
-        case enums.MuscleCategory.shoulders:
+        case 'shoulders':
           return (
             <Image source={ require('../../assets/icons-96/shoulders.png') }/>
           );
@@ -144,13 +144,13 @@ export class ExerciseDisplay extends Component <Props, State> {
     const renderMainMiddle = () => {
       const renderMuscleGroup = muscleGroup => {
         console.log(this.props[muscleGroup]);
-        if (this.props[muscleGroup] !== MuscleGroup.none) {
+        if (this.props[muscleGroup] !== 'none') {
           return (
             <View
               style={ main.muscleGroup }>
               <Text
                 style={ main.metaText }>
-                { this.props[muscleGroup] !== MuscleGroup.none ? '' : 'Primary' }
+                { this.props[muscleGroup] !== 'none' ? '' : 'Primary' }
               </Text>
               <Text
                 style={ main.muscleGroupText }>

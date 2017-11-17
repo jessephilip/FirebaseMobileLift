@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 /*  THIRD PARTY  */
-import LinearGradient from 'react-native-linear-gradient';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 /*  CUSTOM  */
@@ -87,26 +86,24 @@ export class ExerciseScreenBarButtons extends Component <Props, State> {
         <TouchableOpacity
           style={ general.touchOpacity }
           onPress={ () => this.setState({ buttonState: ButtonState.fail }) }>
-          <LinearGradient
-            style={[ general.touchOpacity, general.linearGradient ]}
-            colors={[ gradients.redStart, gradients.redEnd, gradients.redStart ]}>
+          <View
+            style={[ general.touchOpacity, general.linearGradient, { backgroundColor: Styles.colors.fail } ]}>
             <Text
               style={ general.text }>
               <FontAwesome>{Icons.times}</FontAwesome>
             </Text>
-          </LinearGradient>
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
           style={ general.touchOpacity }
           onPress={ () => this.setState({ buttonState: ButtonState.success }) }>
-          <LinearGradient
-            style={[ general.touchOpacity, general.linearGradient ]}
-            colors={ [gradients.greenStart, gradients.greenEnd, gradients.greenStart] }>
+          <View
+            style={[ general.touchOpacity, general.linearGradient, { backgroundColor: Styles.colors.success } ]}>
             <Text
               style={ general.text }>
               <FontAwesome>{Icons.check}</FontAwesome>
             </Text>
-          </LinearGradient>
+          </View>
         </TouchableOpacity>
       </View>
     );
@@ -222,13 +219,6 @@ export class ExerciseScreenBarButtons extends Component <Props, State> {
     }
   }
 }
-
-const gradients = {
-  greenStart: Styles.colors.gradients.green.start,
-  greenEnd: Styles.colors.gradients.green.end,
-  redStart: Styles.colors.gradients.red.start,
-  redEnd: Styles.colors.gradients.red.end,
-};
 
 const general = StyleSheet.create({
   column: {
