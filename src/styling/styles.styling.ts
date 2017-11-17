@@ -28,8 +28,8 @@ export const Styles = {
     extraSmall: 12,
     small: 18,
     normal: 24,
-    large: 48,
-    extraLarge: 60
+    large: 36,
+    extraLarge: 48
   },
   shadows: {
     iosBoxShadow: {
