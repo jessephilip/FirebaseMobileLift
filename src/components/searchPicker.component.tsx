@@ -5,7 +5,6 @@ import * as enums from '../constants/enums';
 
 interface Props {
   choices: any;
-  value: any;
 }
 
 interface State {
@@ -24,7 +23,7 @@ export class SearchPicker extends Component <Props, State> {
   }
 
   componentDidMount () {
-    console.log(this.props.values);
+    console.log(this.props.choices);
   }
 
   public searchInputRender () {

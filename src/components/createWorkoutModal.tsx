@@ -88,9 +88,9 @@ export class CreateWorkoutModal extends Component<Props, State> {
     ];
 
     this.groupInputs = [
-      { icon: 'user', label: 'Exercise Category', value: this.state.muscleCategory, stateSetter: this.repsSetter },
-      { icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.repTypeSetter },
-      { icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.repTypeSetter }
+      { choices: MUSCLECATEGORY, icon: 'user', label: 'Exercise Category', value: this.state.muscleCategory, stateSetter: this.repsSetter },
+      { choices: MUSCLEGROUP, icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.repTypeSetter },
+      { choices: MUSCLEGROUP, icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.repTypeSetter }
     ];
   }
 

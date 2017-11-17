@@ -30,7 +30,8 @@ import FontAwesome, { Icons } from 'react-native-fontawesome';
 
 import { Styles } from '../styling/styles.styling';
 import { SearchPicker } from './searchPicker.component';
-import { MuscleGroup } from '../constants/enums';
+import { SubSearchPicker } from './subSearchPicker.component';
+import { SubTextInput } from './subTextInput.component';
 
 interface Props {
   baseHeight: number;
@@ -42,6 +43,7 @@ interface Props {
   }[];
   title: { icon: string, label: string };
   type: string;
+  choices?: string[];
 }
 
 interface State {
@@ -76,22 +78,26 @@ export class ExpandingInput extends Component <Props, State> {
     if (this.props.type === 'text' && this.state.isExpanded) {
       return this.props.inputs.map( (input, index) => {
         return (
-          <SubText
+          <SubTextInput
             key={ index }
-            index={ index }
             height={ this.props.baseHeight }
-            input={ input } />
+            icon={ input.icon }
+            label={ input.label }
+            stateSetter={ input.stateSetter }
+            value={ input.value } />
         );
       });
     }
     if (this.props.type === 'picker' && this.state.isExpanded) {
       return this.props.inputs.map( (input, index) => {
         return (
-          <SubPicker
+          <SubSearchPicker
             key={ index }
-            index={ index }
             height={ this.props.baseHeight }
-            input={ input }/>
+            icon={ input.icon }
+            label={ input.label }
+            choices={ this.props.choices }
+            stateSetter={ input.stateSetter }/>
         );
       });
     }
@@ -166,212 +172,5 @@ const expandable = StyleSheet.create({
   expandIcon: {
     color: Styles.colors.primary.light,
     fontSize: Styles.textSizes.normal
-  }
-});
-
-interface SubProps {
-  height: number;
-  index: number;
-  input: {
-    icon: string,
-    label: string,
-    value: string,
-    stateSetter: (value) => void
-  };
-}
-
-interface SubState {
-  color: string;
-  value: string;
-}
-
-class SubText extends Component <SubProps, SubState> {
-
-  public componentRef;
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      color: Styles.colors.primary.light,
-      value: this.props.input.value
-    };
-  }
-
-  componentDidMount () {
-    const index = `input${this.props.index}`;
-    this.componentRef = this.refs[index];
-    if (index === 'input0') {
-      this.componentRef.focus();
-    }
-  }
-
-  public onChangeText = (text: string): void => {
-    this.setState({ value: text });
-    this.props.input.stateSetter(text);
-  }
-
-  public render () {
-    return (
-      <View
-        style={[ subText.view, { height: this.props.height } ]}>
-        <Text
-          style={[ subText.graphic, { color: this.state.color } ]}>
-          <FontAwesome>
-            { Icons[this.props.input.icon] }
-          </FontAwesome>
-        </Text>
-        <TextInput
-          ref={ `input${this.props.index}` }
-          style={[ subText.textInput, { borderColor: this.state.color } ]}
-          onBlur={ () => this.setState({ color: Styles.colors.primary.light }) }
-          onChangeText={ text => this.onChangeText(text) }
-          onFocus={ () => this.setState({ color: Styles.colors.secondary.light }) }
-          placeholder={ this.props.input.label }
-          placeholderTextColor={ Styles.colors.primary.light }
-          selectionColor={ this.state.color }
-          value={ this.state.value }>
-        </TextInput>
-      </View>
-    );
-  }
-}
-
-const subText = StyleSheet.create({
-  view: {
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Styles.colors.primary.light,
-    flexDirection: 'row',
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  graphic: {
-    color: Styles.colors.primary.light,
-    fontSize: Styles.textSizes.normal,
-    marginRight: 20,
-    width: 25
-  },
-  textInput: {
-    borderWidth: 0.5,
-    flex: 1,
-    paddingLeft: 10,
-    height: 40,
-  }
-});
-
-interface PickerProps {
-  height: number;
-  index: number;
-  input: {
-    icon: string,
-    label: string,
-    value: string,
-    stateSetter: (value) => void
-  };
-}
-
-interface PickerState {
-  color: string;
-  modalIsVisible: boolean;
-  value: string;
-}
-
-class SubPicker extends Component <PickerProps, PickerState> {
-
-  public componentRef;
-
-  constructor (props) {
-    super(props);
-    this.state = {
-      color: Styles.colors.primary.light,
-      modalIsVisible: false,
-      value: this.props.input.value
-    };
-  }
-
-  public onChangeText = (text: string): void => {
-    this.setState({ value: text });
-    this.props.input.stateSetter(text);
-  }
-
-  public render () {
-    return (
-      <View
-        style={[ subPicker.view, { height: this.props.height } ]}>
-        <Text
-          style={[ subPicker.graphic, { color: this.state.color } ]}>
-          <FontAwesome>
-            { Icons[this.props.input.icon] }
-          </FontAwesome>
-        </Text>
-        <TouchableOpacity
-          onPress={ () => this.setState({ modalIsVisible: true }) }>
-          <Text>
-            { this.props.input.label }
-          </Text>
-        </TouchableOpacity>
-        <Modal
-          animationType='slide'
-          transparent={ true }
-          visible={ this.state.modalIsVisible }>
-          <View
-            style={ subPicker.modalView }>
-            <TouchableOpacity
-              style={ subPicker.modalHeader }
-              onPress={ () => this.setState({ modalIsVisible: false })}>
-            </TouchableOpacity>
-            <View
-              style={ subPicker.modalMain }>
-              <SearchPicker
-                choices={ MuscleGroup }
-                values={ this.props.input.value }></SearchPicker>
-            </View>
-            <TouchableOpacity
-              style={ subPicker.modalFooter }
-              onPress={ () => this.setState({ modalIsVisible: false })}>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-      </View>
-    );
-  }
-}
-
-const subPicker = StyleSheet.create({
-  view: {
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Styles.colors.primary.light,
-    flexDirection: 'row',
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  graphic: {
-    color: Styles.colors.primary.light,
-    fontSize: Styles.textSizes.normal,
-    marginRight: 20,
-    width: 25
-  },
-  textInput: {
-    borderWidth: 0.5,
-    flex: 1,
-    paddingLeft: 10,
-    height: 40,
-  },
-  modalView: {
-    backgroundColor: 'rgba(0,0,0,0.75)',
-    flex: 1,
-    justifyContent: 'space-between'
-  },
-  modalHeader: {
-    flex: 2
-  },
-  modalMain: {
-    backgroundColor: 'white',
-    flex: 4,
-    justifyContent: 'center',
-  },
-  modalFooter: {
-    flex: 2
   }
 });
