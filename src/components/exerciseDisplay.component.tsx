@@ -142,19 +142,29 @@ export class ExerciseDisplay extends Component <Props, State> {
 
     /*  MAIN-MIDDLE  */
     const renderMainMiddle = () => {
+
+      function displayGroupHeaders (muscleGroup: string) {
+        if (muscleGroup === 'primaryMuscleGroup') {
+          return 'Primary';
+        } else if (muscleGroup === 'secondaryMuscleGroup') {
+          return 'Secondary';
+        } else {
+          return '';
+        }
+      }
+
       const renderMuscleGroup = muscleGroup => {
-        console.log(this.props[muscleGroup]);
         if (this.props[muscleGroup] !== 'none') {
           return (
             <View
               style={ main.muscleGroup }>
               <Text
                 style={ main.metaText }>
-                { this.props[muscleGroup] !== 'none' ? '' : 'Primary' }
+                { displayGroupHeaders(muscleGroup) }
               </Text>
               <Text
                 style={ main.muscleGroupText }>
-                { this.props[muscleGroup] || this.setPlaceholders(muscleGroup) }
+                { this.props[muscleGroup] }
               </Text>
             </View>
           );

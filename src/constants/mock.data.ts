@@ -41,8 +41,8 @@ export const EXERCISENAMES = [
   'Squat',
 ];
 
-/* cust Enums for this app */
 export const MUSCLECATEGORY = [
+  'none',
   'arms',
   'back',
   'chest',
@@ -50,25 +50,23 @@ export const MUSCLECATEGORY = [
   'glutes',
   'legs',
   'shoulders',
-  'none'
 ];
 
 export const MUSCLEGROUP = [
+  'none',
   'biceps',
   'cavs',
   'forearms',
   'pectorals',
   'thighs',
   'triceps',
-  'none'
 ];
 
 export const RESISTANCETYPE = [
-   'barbell',
-   'dumbbell',
-   'kettlebell',
-   'resistance bands',
-   'none'
+  'none',
+  'dumbbell',
+  'kettlebell',
+  'resistance bands',
 ];
 
 const secondExerciseProps: OptionalProperties = {

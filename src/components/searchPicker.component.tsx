@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import { Picker, StyleSheet, Text, TextInput, View } from 'react-native';
-import { EXERCISENAMES } from '../constants/mock.data';
+import { Picker, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import * as enums from '../constants/enums';
+import { Styles } from '../styling/styles.styling';
+import { BehaviorSubject } from 'rxjs-es';
 
 interface Props {
-  choices: any;
+  choices: string[];
+  closeModal: () => void;
+  stateSetter: (value) => void;
+  valueSubject?: BehaviorSubject<string>;
+  title?: string;
 }
 
 interface State {
@@ -22,8 +27,14 @@ export class SearchPicker extends Component <Props, State> {
     };
   }
 
-  componentDidMount () {
-    console.log(this.props.choices);
+  public done = value => {
+    if (value === 'cancel') {
+      this.props.closeModal();
+    } else {
+      this.props.stateSetter(this.state.pickerValue);
+      this.props.valueSubject.next(this.state.pickerValue);
+      this.props.closeModal();
+    }
   }
 
   public searchInputRender () {
@@ -35,6 +46,7 @@ export class SearchPicker extends Component <Props, State> {
           autoCapitalize={ enums.AutoCapitalize.none }
           autoFocus={ true }
           onChangeText={ text => this.setState({ searchText: text }) }
+          placeholder='filter categories'
           value={ this.state.searchText }>
         </TextInput>
       </View>
@@ -44,41 +56,100 @@ export class SearchPicker extends Component <Props, State> {
   public pickerRender () {
 
     const itemRenderer = () => {
-      const filteredExercises = EXERCISENAMES.filter(exerciseName => exerciseName.toLowerCase().includes(this.state.searchText.toLowerCase()));
-      return filteredExercises.map( (exerciseName, i) => {
+      const filteredChoices = this.props.choices.filter(exerciseName => exerciseName.toLowerCase().includes(this.state.searchText.toLowerCase()));
+      return filteredChoices.map( (choice, i) => {
         return (
           <Picker.Item
             key={ i }
-            label={ exerciseName }
-            value={ exerciseName } />
+            label={ choice }
+            value={ choice } />
         );
       });
     };
 
     return (
-      <View>
-        <Picker
-          style={ picker.input }
-          selectedValue={ this.state.pickerValue }
-          onValueChange={ (itemValue, itemIndex) => this.setState({ pickerValue: itemValue }) }>
-          { itemRenderer() }
-        </Picker>
+      <Picker
+        style={ picker.input }
+        selectedValue={ this.state.pickerValue }
+        onValueChange={ (itemValue, itemIndex) => this.setState({ pickerValue: itemValue }) }>
+        { itemRenderer() }
+      </Picker>
+    );
+  }
+
+  public renderFooter () {
+    return (
+      <View
+        style={ container.footer }>
+        <TouchableOpacity
+          onPress={ () => this.done('cancel') }>
+          <Text
+            style={{ color: Styles.colors.fail }}>
+            Cancel
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={ () => this.done('confirm') }>
+          <Text
+            style={{ color: Styles.colors.success }}>
+            Confirm
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
   public render () {
     return (
-      <View>
-        { this.searchInputRender() }
-        { this.pickerRender() }
+      <View
+        style={{ backgroundColor: 'white' }}>
+        <View
+          style={ container.headerView }>
+          <Text
+            style={ container.headerText }>
+            { this.props.title }
+          </Text>
+        </View>
+        <View
+          style={ container.main }>
+          { this.searchInputRender() }
+          { this.pickerRender() }
+        </View>
+        { this.renderFooter() }
       </View>
     );
   }
 }
 
+const container = StyleSheet.create({
+  headerView: {
+    alignItems: 'center',
+    backgroundColor: Styles.colors.primary.dark,
+    height: 50,
+    justifyContent: 'center'
+  },
+  headerText: {
+    color: 'white',
+    fontSize: Styles.textSizes.normal
+  },
+  main: {},
+  footer: {
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    height: 50,
+    justifyContent: 'space-between',
+    paddingLeft: 20,
+    paddingRight: 20
+  }
+});
+
 const textInput = StyleSheet.create({
-  container: {},
+  container: {
+    alignItems: 'center',
+    height: 100,
+    justifyContent: 'center'
+  },
   input: {
     textAlign: 'center'
   }
@@ -86,6 +157,5 @@ const textInput = StyleSheet.create({
 
 const picker = StyleSheet.create({
   container: {},
-  input: {
-  },
+  input: {},
 });

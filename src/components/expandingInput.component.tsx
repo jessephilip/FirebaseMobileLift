@@ -24,7 +24,7 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Modal } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
@@ -39,11 +39,11 @@ interface Props {
     icon: string,
     label: string,
     value: string,
-    stateSetter: (value) => void
+    stateSetter: (value) => void,
+    choices?
   }[];
   title: { icon: string, label: string };
   type: string;
-  choices?: string[];
 }
 
 interface State {
@@ -96,7 +96,7 @@ export class ExpandingInput extends Component <Props, State> {
             height={ this.props.baseHeight }
             icon={ input.icon }
             label={ input.label }
-            choices={ this.props.choices }
+            choices={ input.choices }
             stateSetter={ input.stateSetter }/>
         );
       });

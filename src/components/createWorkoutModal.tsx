@@ -88,9 +88,9 @@ export class CreateWorkoutModal extends Component<Props, State> {
     ];
 
     this.groupInputs = [
-      { choices: MUSCLECATEGORY, icon: 'user', label: 'Exercise Category', value: this.state.muscleCategory, stateSetter: this.repsSetter },
-      { choices: MUSCLEGROUP, icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.repTypeSetter },
-      { choices: MUSCLEGROUP, icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.repTypeSetter }
+      { choices: MUSCLECATEGORY, icon: 'user', label: 'Exercise Category', value: this.state.muscleCategory, stateSetter: this.categorySetter },
+      { choices: MUSCLEGROUP, icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.primarySetter },
+      { choices: MUSCLEGROUP, icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.secondarySetter }
     ];
   }
 
@@ -98,9 +98,9 @@ export class CreateWorkoutModal extends Component<Props, State> {
     exerciseName: '',
     prefix: '',
     suffix: '',
-    muscleCategory: MUSCLECATEGORY[MUSCLECATEGORY.length - 1],
-    primaryMuscleGroup: MUSCLEGROUP[MUSCLEGROUP.length - 1],
-    secondaryMuscleGroup: MUSCLEGROUP[MUSCLEGROUP.length - 1],
+    muscleCategory: MUSCLECATEGORY[0],
+    primaryMuscleGroup: MUSCLEGROUP[0],
+    secondaryMuscleGroup: MUSCLEGROUP[0],
     repType: '',
     reps: '',
     resistanceType: '',
