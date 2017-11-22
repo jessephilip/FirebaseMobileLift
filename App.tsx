@@ -72,6 +72,6 @@ const MobileLift = StackNavigator({
 
 export default class App extends Component {
   render () {
-    return <MobileLift />;
+    return  <MobileLift />;
   }
 }
