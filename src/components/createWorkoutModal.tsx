@@ -9,6 +9,8 @@ import {
   View,
   } from 'react-native';
 
+import { ToastComponent } from '../components/toast.component';
+
 // third party components
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 
@@ -25,6 +27,7 @@ import { ExerciseDisplay } from './exerciseDisplay.component';
 
 // mock data
 import { MUSCLECATEGORY, MUSCLEGROUP, RESISTANCETYPE } from '../constants/mock.data';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 interface Props {
   isVisible: boolean;
@@ -42,7 +45,10 @@ interface State {
   reps: string;
   muscleCategory: string;
   primaryMuscleGroup: string;
-  secondaryMuscleGroup: string; // drop down with other
+  secondaryMuscleGroup: string;
+
+  // for toast notification
+  toastIsMounted: boolean;
 }
 
 export class CreateWorkoutModal extends Component<Props, State> {
@@ -63,6 +69,9 @@ export class CreateWorkoutModal extends Component<Props, State> {
   public weightInputs;
   public repInputs;
   public groupInputs;
+
+  public toastSubject = new BehaviorSubject<boolean>(false);
+  public toastListener;
 
   constructor (props) {
     super(props);
@@ -92,6 +101,8 @@ export class CreateWorkoutModal extends Component<Props, State> {
       { choices: MUSCLEGROUP, icon: 'send', label: 'Primary Muscle Group', value: this.state.primaryMuscleGroup, stateSetter: this.primarySetter },
       { choices: MUSCLEGROUP, icon: 'check', label: 'Secondary Muscle Group', value: this.state.secondaryMuscleGroup, stateSetter: this.secondarySetter }
     ];
+
+   this.toastListener = this.toastSubject.subscribe(value => this.setState({ toastIsMounted: value }));
   }
 
   public initialState = {
@@ -105,11 +116,13 @@ export class CreateWorkoutModal extends Component<Props, State> {
     reps: '',
     resistanceType: '',
     weight: '',
-    weightUnit: ''
+    weightUnit: '',
+    toastIsMounted: false
   };
 
   public reset = () => {
-    this.setState(this.initialState);
+    // this.setState(this.initialState);
+    this.setState({ toastIsMounted: !this.state.toastIsMounted });
   }
 
   public renderHeader () {
@@ -206,6 +219,18 @@ export class CreateWorkoutModal extends Component<Props, State> {
     );
   }
 
+ // render the <ToastComponent/>
+ public renderToast = () => {
+   if (this.state.toastIsMounted) {
+     return (
+       <ToastComponent
+         subject={ this.toastSubject }
+         timeout={ 3000 }
+         toastMessage='Exercise added to playlist' />
+     );
+   }
+ }
+
   public render () {
     return (
       <Modal
@@ -214,8 +239,14 @@ export class CreateWorkoutModal extends Component<Props, State> {
         visible={ this.props.isVisible }>
         <View
           style={ general.container }>
-          { this.renderHeader () }
-          { this.renderMain () }
+          <View
+            style={ general.container }>
+            { this.renderHeader() }
+            { this.renderMain() }
+          </View>
+          <View>
+            { this.renderToast() }
+          </View>
         </View>
       </Modal>
     );
