@@ -48,7 +48,12 @@ interface State {
   secondaryMuscleGroup: string;
 
   // for toast notification
+  resetExercises: boolean;
+  resetWeights: boolean;
+  resetReps: boolean;
+  resetGroups: boolean;
   toastIsMounted: boolean;
+  toastMessage: string;
 }
 
 export class CreateWorkoutModal extends Component<Props, State> {
@@ -117,12 +122,50 @@ export class CreateWorkoutModal extends Component<Props, State> {
     resistanceType: '',
     weight: '',
     weightUnit: '',
-    toastIsMounted: false
+    resetExercises: false,
+    resetWeights: false,
+    resetReps: false,
+    resetGroups: false,
+    toastIsMounted: false,
+    toastMessage: ''
   };
 
   public reset = () => {
-    // this.setState(this.initialState);
-    this.setState({ toastIsMounted: !this.state.toastIsMounted });
+    for (let key in this.state) {
+      if (this.state.hasOwnProperty(key)) {
+        this.setState({ [key]: '' });
+      }
+    }
+
+    // TODO: do other things to reset exerciseDisplay and expanding inputs
+    this.setState({ resetExercises: true });
+    this.setState({ resetWeights: true });
+    this.setState({ resetReps: true });
+    this.setState({ resetGroups: true });
+
+    // this.setState({ resetExercises: false });
+    // this.setState({ resetWeights: false });
+    // this.setState({ resetReps: false });
+    // this.setState({ resetGroups: false });
+  }
+
+  public resetValue = arr => {
+    arr.forEach((key, value, object) => {
+      console.log(key);
+      console.log(value);
+      // element.reset = true;
+    });
+  }
+
+  public submit = () => {
+    // send info to toast
+    if (!this.state.exerciseName) {
+      this.setState({ toastMessage: 'Exercise Name is required.' });
+    } else {
+      this.setState({ toastMessage: this.state.exerciseName });
+    }
+
+    this.setState({ toastIsMounted: true });
   }
 
   public renderHeader () {
@@ -150,10 +193,11 @@ export class CreateWorkoutModal extends Component<Props, State> {
             </FontAwesome>
           </TouchableOpacity>
           <TouchableOpacity
-            style={ header.column }>
+            style={ header.column }
+            onPress={ () => this.submit() }>
             <FontAwesome
               style={ header.graphic }>
-              { Icons.check }
+              { Icons.plus }
             </FontAwesome>
           </TouchableOpacity>
         </View>
@@ -187,21 +231,25 @@ export class CreateWorkoutModal extends Component<Props, State> {
           <ExpandingInput
             baseHeight={ 50 }
             inputs={ this.exerciseInputs }
+            reset={ this.state.resetExercises }
             title={{ icon: 'tag', label: 'Exercise' }}
             type='text'/>
           <ExpandingInput
             baseHeight={ 50 }
             inputs={ this.weightInputs }
+            reset={ this.state.resetWeights }
             title={{ icon: 'tag', label: 'Resistance' }}
             type='text'/>
           <ExpandingInput
             baseHeight={ 50 }
             inputs={ this.repInputs }
+            reset={ this.state.resetReps }
             title={{ icon: 'tag', label: 'Reps' }}
             type='text'/>
           <ExpandingInput
             baseHeight={ 50 }
             inputs={ this.groupInputs }
+            reset={ this.state.resetGroups }
             title={{ icon: 'tag', label: 'Groups' }}
             type='picker'/>
         </ScrollView>
@@ -226,7 +274,7 @@ export class CreateWorkoutModal extends Component<Props, State> {
        <ToastComponent
          subject={ this.toastSubject }
          timeout={ 3000 }
-         toastMessage='Exercise added to playlist' />
+         toastMessage={ `${this.state.toastMessage}` }/>
      );
    }
  }

@@ -8,6 +8,7 @@ interface Props {
   height: number;
   icon: string;
   label: string;
+  reset: boolean;
   value: string;
   stateSetter: (text) => void;
 }
@@ -23,10 +24,18 @@ export class SubTextInput extends Component <Props, State> {
 
   constructor (props) {
     super(props);
+    console.log(this.props.value);
     this.state = {
       color: Styles.colors.primary.light,
       value: this.props.value
     };
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.reset !== this.props.reset && this.props.reset) {
+      console.log('componentDidUpdate reset');
+      this.setState({ value: '' });
+    }
   }
 
   public onChangeText = (text: string): void => {

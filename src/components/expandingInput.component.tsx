@@ -42,6 +42,7 @@ interface Props {
     stateSetter: (value) => void,
     choices?
   }[];
+  reset: boolean;
   title: { icon: string, label: string };
   type: string;
 }
@@ -83,6 +84,7 @@ export class ExpandingInput extends Component <Props, State> {
             height={ this.props.baseHeight }
             icon={ input.icon }
             label={ input.label }
+            reset={ this.props.reset }
             stateSetter={ input.stateSetter }
             value={ input.value } />
         );

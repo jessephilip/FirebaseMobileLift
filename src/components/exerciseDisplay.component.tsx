@@ -56,12 +56,8 @@ export class ExerciseDisplay extends Component <Props, State> {
     super(props);
   }
 
-  componentDidMount () {
-    console.log({
-      category: this.props.muscleCategory,
-      primary: this.props.primaryMuscleGroup,
-      secondary: this.props.secondaryMuscleGroup,
-    });
+  componentDidUpdate () {
+    console.log('exerciseDisplay updated');
   }
 
   public setCategoryIcon () {
